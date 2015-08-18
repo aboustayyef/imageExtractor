@@ -1,18 +1,17 @@
-#Previewer for URLs
+#Image Extractor
 
-This class takes a url as input and outputs a Title, a Description and an Image for that url
+This class extracts an image from a url.
+supports open graph images, img tags and Youtube embed previews (in that order)
 
 ##Usage
 
 ```
 <?php 
 
-use Aboustayyef\Previewer;
+use Aboustayyef\ImageExtractor;
 
-$previewer = new Previewer('http://url.goes/here');
-$title = $previewer->getTitle();
-$description = $previewer->getDescription();
-$image = $previewer->getImage();
+$imageExtractor = new ImageExtractor('http://url.goes/here');
+$img = $imageExtractor->get(300); // Where 300 here is the minimum width accepted for an image
 
 ?>
 
