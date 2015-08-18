@@ -1,5 +1,5 @@
 {
-    "name": "aboustayyef/imageExtractor",
+    "name": "aboustayyef/image-extractor",
     "description": "takes a url or HTML and returns the largest image",
     "license": "MIT",
     "keywords": ["scraping"],
