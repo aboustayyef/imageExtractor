@@ -39,7 +39,8 @@ class ImageExtractor
             try {
                 $this->content = @file_get_contents($this->url);
             } catch (Exception $e) {
-                die('couldn\'t extract url');
+                echo 'couldn\'t extract url';
+                return false;
             }      
         } else {
             $this->content = $content;
@@ -47,7 +48,8 @@ class ImageExtractor
 
         // make sure content is big enough
         if (strlen($this->content) < 10) {
-            die('this resource\'s content is too small');
+            echo 'this resource\'s content is too small';
+            return false;
         }
 
         // Initialize crawler
