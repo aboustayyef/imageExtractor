@@ -4,7 +4,7 @@ Namespace Aboustayyef\ImageGetters;
 
 class ImgTagGetter extends _Getter
 {
-	
+	// gets largest image in page
 	// available parameters from parent constructor:
 	// $crawler, $url, $minsize, $candidateImage
 
@@ -15,27 +15,39 @@ class ImgTagGetter extends _Getter
     	
     	if ($imageCrawler->count() > 0)
     	{
-    		
+    		$largestImage = null;
+            $lastImageArea = 0;
+
     		foreach ($imageCrawler as $key => $image)
     		{
     			
     			$this->candidateImage = $image->getAttribute('src');
     			
-    			$dimensions = $this->candidateImageSize();
-
-    			$width = (int) $dimensions['width'];
-	    		$min = (int) $this->minsize;
-	    	
+                // get Image's dimensions
+    			
+                $dimensions = $this->candidateImageSize();
+    			$width = $dimensions['width'];
+                $height = $dimensions['height']; 
+	    		$min = $this->minsize;
+ 	    	
 	    		if ($width > $min) 
 	    		{
-	    			return $this->candidateImage;
+                    if (($width * $height) >= $lastImageArea) {
+                        $lastImageArea = $width * $height;
+                        $largestImage = $this->candidateImage;
+                    }
 	    		}    		
     		
     		}
 
-    		return false;
-   		
+            if ($largestImage) {
+                return $largestImage;
+            }
+		
     	}
+
+        return false;
+
 	}
 }
 ?>

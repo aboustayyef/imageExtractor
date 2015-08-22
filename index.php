@@ -2,7 +2,7 @@
 
 	require "vendor/autoload.php";
 	
-	$test = new \Aboustayyef\ImageExtractor('http://chocolateandvanillasoles.com/2015/08/18/a-basket-or-a-bag/');
+	$test = new \Aboustayyef\ImageExtractor('http://blogbaladi.com/youstink-saturday-protest-should-we-join-or-not/');
 
 	echo $test->get(400); // minimum width = 200
 ?>
