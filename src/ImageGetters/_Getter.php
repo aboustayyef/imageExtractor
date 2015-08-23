@@ -34,16 +34,19 @@ abstract class _Getter{
 
 	public function normalizeCandidateImageUrl(){
 		
-		// common code to make sure candidate image url is absolute
-
-		$urlParts = parse_url($this->url);
-		$rootUrl = $urlParts['scheme'].'://'.$urlParts['host'];
 
 		$ImageUrlParts = parse_url($this->candidateImage);
 
-		$this->candidateImage = $rootUrl . $ImageUrlParts['path'];
+		// if url is not absolute, fix it;
+
+		if (!isset($ImageUrlParts['scheme'])) {
+			$urlParts = parse_url($this->url);
+			$rootUrl = $urlParts['scheme'].'://'.$urlParts['host'];
+			$this->candidateImage = $rootUrl . $ImageUrlParts['path'];
+		}
 
 		// add query if it exists
+
 		if (isset($ImageUrlParts['query'])) {
 			$this->candidateImage = $this->candidateImage . '?' . $ImageUrlParts['query'];
 		}
