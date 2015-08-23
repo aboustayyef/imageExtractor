@@ -25,8 +25,8 @@ abstract class _Getter{
 		$this->normalizeCandidateImageUrl();
 		
 		// then we check and return the dimensions of the candidate image size;
-		$fastImageSize = new \fastImageSize\fastImageSize();
-		$imageSize = $fastImageSize->getImageSize($this->candidateImage);
+		$FastImageSize = new \FastImageSize\FastImageSize();
+		$imageSize = $FastImageSize->getImageSize($this->candidateImage);
 		return $imageSize;
 	}
 
