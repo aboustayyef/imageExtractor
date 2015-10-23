@@ -21,7 +21,10 @@ class SocialGetter extends _Getter{
     		$min = (int) $this->minsize;
 
     		if ($width > $min) {
-    			return $this->candidateImage;
+                echo "Disqualified: $this->disqualified" . PHP_EOL;
+                if ($this->candidateImage != $this->disqualified) {
+                    return $this->candidateImage;
+                }
     		}
     		return false;
 

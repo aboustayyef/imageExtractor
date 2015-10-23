@@ -25,7 +25,9 @@ class YoutubePreviewGetter extends _Getter
             
             if (@getimagesize($this->candidateImage)) 
             {
-              return $this->candidateImage;
+                if ($this->candidateImage != $this->disqualified) {
+                    return $this->candidateImage;
+                }
             }
 
             return false;

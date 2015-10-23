@@ -6,11 +6,13 @@ abstract class _Getter{
 	
 	protected $crawler, $url, $minsize;
 	protected $candidateImage;
+	protected $disqualified;
 
-	public function __construct($crawler, $url, $minsize){
+	public function __construct($crawler, $url, $minsize, $disqualified){
 
 		$this->crawler = $crawler;
 		$this->url = $url;
+		$this->disqualified = $disqualified;
 		$this->minsize = $minsize;
 		$this->candidateImage = null;
 

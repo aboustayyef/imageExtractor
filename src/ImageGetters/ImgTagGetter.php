@@ -22,6 +22,13 @@ class ImgTagGetter extends _Getter
     		{
     			
     			$this->candidateImage = $image->getAttribute('src');
+
+                // skip if is equal to disqualified image
+                if ($this->candidateImage == $this->disqualified) {
+                    continue;
+                }
+
+                echo $this->candidateImage . PHP_EOL;
     			
                 // get Image's dimensions
     			
