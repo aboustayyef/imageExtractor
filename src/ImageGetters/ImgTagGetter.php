@@ -24,7 +24,7 @@ class ImgTagGetter extends _Getter
     			$this->candidateImage = $image->getAttribute('src');
 
                 // skip if is equal to disqualified image
-                if ($this->candidateImage == $this->disqualified) {
+                if (in_array($this->candidateImage, $this->disqualified) ) {
                     continue;
                 }
   			

@@ -19,13 +19,17 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ImageExtractor
 {
-    protected $disqualified = ''; // will ignore an image if it's equal to this variable
+    protected $disqualified = []; // will ignore an image if it's equal to this variable
 	protected $content;
     protected $crawler;
     protected $url; // we always need the url even when content is given, for relative images;
 
     public function disqualify($url = ''){
-        $this->disqualified = $url;
+        $this->disqualified[] = $url;
+    }
+
+    public function getDisqualified(){
+        return $this->disqualified;
     }
 
 	public function __construct($url=null, $content=null){ // url is
@@ -69,24 +73,24 @@ class ImageExtractor
         
         $candidate = (new ImageGetters\SocialGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
         if ($candidate) {
-            echo "Method Used: Social Getter";
+            // echo "Method Used: Social Getter";
             return $candidate;
         }
 
         // try for content images (using <img> tag)
         $candidate = (new ImageGetters\ImgTagGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
         if ($candidate) {
-            echo "Method Used: Img Tag Getter";
+            // echo "Method Used: Img Tag Getter";
             return $candidate;
         }
 
         // try for youtube embeds previews
         $candidate = (new ImageGetters\YoutubePreviewGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
         if ($candidate) {
-            echo "Method Used: Youtube Image Getter";
+            // echo "Method Used: Youtube Image Getter";
             return $candidate;
         }
-
+        return false;
         // try for vimeo images
     }
 
