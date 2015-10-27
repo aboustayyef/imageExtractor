@@ -9,25 +9,30 @@ class SocialGetter extends _Getter{
 
 	public function get(){
 		
-		$imageCrawler = $this->crawler->filter('meta[property="og:image"]');
-    	
-    	if ($imageCrawler->count() > 0) {
-    		
-    		$this->candidateImage = $imageCrawler->first()->attr('content');
+		try {
+    
+            $imageCrawler = $this->crawler->filter('meta[property="og:image"]');
+       
+            if ($imageCrawler->count() > 0) {
+                
+                $this->candidateImage = $imageCrawler->first()->attr('content');
 
-    		$dimensions = $this->candidateImageSize();
+                $dimensions = $this->candidateImageSize();
 
-    		$width = (int) $dimensions['width'];
-    		$min = (int) $this->minsize;
+                $width = (int) $dimensions['width'];
+                $min = (int) $this->minsize;
 
-    		if ($width > $min) {
-                if ( !in_array($this->candidateImage, $this->disqualified)) {
-                    return $this->candidateImage;
+                if ($width > $min) {
+                    if ( !in_array($this->candidateImage, $this->disqualified)) {
+                        return $this->candidateImage;
+                    }
                 }
-    		}
-    		return false;
+                return false;
 
-    	}
+            }            
+        } catch (Exception $e) {
+            return false;
+        }
     	return false;
 	}
 
