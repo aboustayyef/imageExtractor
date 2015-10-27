@@ -23,7 +23,7 @@ class ImageExtractor
 	protected $content;
     protected $crawler;
     protected $url; // we always need the url even when content is given, for relative images;
-
+    public $status='ok';
     public function disqualify($url = ''){
         $this->disqualified[] = $url;
     }
@@ -37,7 +37,8 @@ class ImageExtractor
         // make sure a url is entered
         
         if (!isset($url)) {
-            die('a url is required as the first parameter');
+            echo 'a url is required as the first parameter';
+            $this->status = 'error';
         }
 
         $this->url = $url;
@@ -48,7 +49,7 @@ class ImageExtractor
                 $this->content = @file_get_contents($this->url);
             } catch (Exception $e) {
                 echo 'couldn\'t extract url';
-                return false;
+                $this->status = 'error';
             }      
         } else {
             $this->content = $content;
@@ -57,7 +58,7 @@ class ImageExtractor
         // make sure content is big enough
         if (strlen($this->content) < 10) {
             echo 'this resource\'s content is too small';
-            return false;
+            $this->status ='error';
         }
 
         // Initialize crawler
@@ -69,6 +70,9 @@ class ImageExtractor
 
     public function get($minsize = 300){
 
+        if ($this->status == 'error') {
+            return false;
+        }
         // try for social images (facebook open graph and twitter)
         
         $candidate = (new ImageGetters\SocialGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
