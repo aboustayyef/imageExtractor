@@ -10,8 +10,12 @@ class YoutubePreviewGetter extends _Getter
 
 	public function get()
 	{
-		
-        $htmlContent = $this->crawler->filter('body')->html();
+        
+        if ($this->crawler->filter('body')->count() > 0) {
+            $htmlContent = $this->crawler->filter('body')->html();
+        } else {
+            return false;
+        }		
       
         preg_match('#(\.be/|/embed/|/v/|/watch\?v=)([A-Za-z0-9_-]{5,11})#', $htmlContent, $matches);
 

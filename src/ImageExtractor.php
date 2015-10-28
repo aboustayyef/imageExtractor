@@ -31,6 +31,9 @@ class ImageExtractor
     public function getDisqualified(){
         return $this->disqualified;
     }
+    public function useSlowExtraction(){
+        return $this->fastExtraction = false;
+    }
 
 	public function __construct($url=null, $content=null){ // url is
 
@@ -82,7 +85,8 @@ class ImageExtractor
         }
 
         // try for content images (using <img> tag)
-        $candidate = (new ImageGetters\ImgTagGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
+        $extractor = (new ImageGetters\ImgTagGetter($this->crawler, $this->url, $minsize, $this->disqualified));
+        $candidate = $extractor->get(300);
         if ($candidate) {
             // echo "Method Used: Img Tag Getter";
             return $candidate;

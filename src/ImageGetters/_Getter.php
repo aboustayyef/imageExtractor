@@ -8,7 +8,7 @@ abstract class _Getter{
 	protected $candidateImage;
 	protected $disqualified;
 
-	public function __construct($crawler, $url, $minsize, $disqualified){
+	public function __construct($crawler, $url, $minsize, $disqualified) {
 
 		$this->crawler = $crawler;
 		$this->url = $url;
@@ -27,9 +27,22 @@ abstract class _Getter{
 		$this->normalizeCandidateImageUrl();
 		
 		// then we check and return the dimensions of the candidate image size;
-		$FastImageSize = new \FastImageSize\FastImageSize();
-		$imageSize = $FastImageSize->getImageSize($this->candidateImage);
+
+
+		/*if ($this->fastExtraction) {
+			echo 'Extracting dimensions using fast extraction' . PHP_EOL;
+			$FastImageSize = new \FastImageSize\FastImageSize();
+			$imageSize = $FastImageSize->getImageSize($this->candidateImage);
+			return $imageSize;
+		}*/
+
+		$image = getImageSize($this->candidateImage);
+		$imageSize = [];
+		$imageSize['width'] = $image[0];
+		$imageSize['height'] = $image[1];
 		return $imageSize;
+
+
 	}
 
 
