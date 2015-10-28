@@ -33,9 +33,10 @@ class ImgTagGetter extends _Getter
                 $dimensions = $this->candidateImageSize();
     			$width = $dimensions['width'];
                 $height = $dimensions['height']; 
+                $ratio = $width / $height;
 	    		$min = $this->minsize;
  	    	
-	    		if ($width > $min) 
+	    		if (($width > $min) && ($ratio < 3.5)) 
 	    		{
                     if (($width * $height) >= $lastImageArea) {
                         $lastImageArea = $width * $height;
