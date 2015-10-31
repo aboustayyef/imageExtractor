@@ -8,7 +8,7 @@ class YoutubePreviewGetter extends _Getter
 	// available parameters from parent constructor:
 	// $crawler, $url, $minsize, $candidateImage
 
-	public function get()
+	public function get($minsize=300)
 	{
         
         if ($this->crawler->filter('body')->count() > 0) {

@@ -7,18 +7,19 @@ abstract class _Getter{
 	protected $crawler, $url, $minsize;
 	protected $candidateImage;
 	protected $disqualified;
+	protected $imageExtractor;
 
-	public function __construct($crawler, $url, $minsize, $disqualified) {
+	public function __construct($imageExtractor) {
 
-		$this->crawler = $crawler;
-		$this->url = $url;
-		$this->disqualified = $disqualified;
-		$this->minsize = $minsize;
+		$this->imageExtractor = $imageExtractor;
+		$this->crawler = $imageExtractor->crawler;
+		$this->url = $imageExtractor->url;
+		$this->disqualified = $imageExtractor->disqualified;
 		$this->candidateImage = null;
 
 	}
 
-	abstract function get();
+	abstract function get($minsize = 300);
 
 	public function candidateImageSize(){
 		//common code for checking the size of the candidate image
@@ -36,7 +37,7 @@ abstract class _Getter{
 			return $imageSize;
 		}*/
 
-		$image = getImageSize($this->candidateImage);
+		$image = @getImageSize($this->candidateImage);
 		$imageSize = [];
 		$imageSize['width'] = $image[0];
 		$imageSize['height'] = $image[1];

@@ -2,7 +2,7 @@
 
 	require "../vendor/autoload.php";
 
-	$test = new \Aboustayyef\ImageExtractor('http://blogbaladi.com/netflix-might-be-launching-in-the-middle-east-soon/');
+	$test = new \Aboustayyef\ImageExtractor('http://blogbaladi.com/netflix-might-be-launching-in-the-middle-east-soon/', null, true);
 
 	echo "Without Disqualification: ".PHP_EOL;
 	echo $test->get(300) . PHP_EOL ; 

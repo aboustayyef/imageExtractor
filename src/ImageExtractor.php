@@ -19,11 +19,19 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class ImageExtractor
 {
-    protected $disqualified = []; // will ignore an image if it's equal to this variable
-	protected $content;
-    protected $crawler;
-    protected $url; // we always need the url even when content is given, for relative images;
+    public $disqualified = []; // will ignore an image if it's equal to this variable
+	public $content;
+    public $crawler;
+    public $url; // we always need the url even when content is given, for relative images;
     public $status='ok';
+    public $verbose = false;
+
+    public function log($message){
+        if ($this->verbose) {
+            echo '== ' . $message . PHP_EOL ;
+        }
+    }
+
     public function disqualify($url = ''){
         $this->disqualified[] = $url;
     }
@@ -31,12 +39,12 @@ class ImageExtractor
     public function getDisqualified(){
         return $this->disqualified;
     }
-    public function useSlowExtraction(){
-        return $this->fastExtraction = false;
-    }
 
-	public function __construct($url=null, $content=null){ // url is
+	public function __construct($url=null, $content=null, $verbose = false){ // url is
 
+        $this->verbose = $verbose;
+
+        $this->log('constructing Extractor');
         // make sure a url is entered
         
         if (!isset($url)) {
@@ -49,23 +57,26 @@ class ImageExtractor
         
         if (!isset($content)) {
             try {
+                $this->log('extracting content from ' . $this->url);
                 $this->content = @file_get_contents($this->url);
             } catch (Exception $e) {
                 echo 'couldn\'t extract url';
                 $this->status = 'error';
             }      
         } else {
+            $this->log('setting content to injected content');
             $this->content = $content;
         }
 
         // make sure content is big enough
+        $this->log('Making sure content is large enough');
         if (strlen($this->content) < 10) {
             echo 'this resource\'s content is too small';
             $this->status ='error';
         }
 
         // Initialize crawler
-        
+        $this->log('Initializing the Crawling object and populating it');
         $this->crawler = new Crawler;
         $this->crawler->addHtmlContent($this->content);
 
@@ -74,18 +85,20 @@ class ImageExtractor
     public function get($minsize = 300){
 
         if ($this->status == 'error') {
+            $this->log('There was an error');
             return false;
         }
-        // try for social images (facebook open graph and twitter)
         
-        $candidate = (new ImageGetters\SocialGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
+        $this->log('Trying to extract using social tags');
+        $candidate = (new ImageGetters\SocialGetter($this))->get(300);
         if ($candidate) {
             // echo "Method Used: Social Getter";
             return $candidate;
         }
 
         // try for content images (using <img> tag)
-        $extractor = (new ImageGetters\ImgTagGetter($this->crawler, $this->url, $minsize, $this->disqualified));
+        $this->log('Trying to extract using <img> tags');
+        $extractor = (new ImageGetters\ImgTagGetter($this));
         $candidate = $extractor->get(300);
         if ($candidate) {
             // echo "Method Used: Img Tag Getter";
@@ -93,7 +106,8 @@ class ImageExtractor
         }
 
         // try for youtube embeds previews
-        $candidate = (new ImageGetters\YoutubePreviewGetter($this->crawler, $this->url, $minsize, $this->disqualified))->get();
+        $this->log('Trying to extract using Youtube Metadata');
+        $candidate = (new ImageGetters\YoutubePreviewGetter($this))->get();
         if ($candidate) {
             // echo "Method Used: Youtube Image Getter";
             return $candidate;

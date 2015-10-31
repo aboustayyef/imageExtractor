@@ -7,14 +7,11 @@ class SocialGetter extends _Getter{
 	// available parameters from parent constructor:
 	// $crawler, $url, $minsize, $candidateImage
 
-	public function get(){
-		
+	public function get($minsize = 300){
+		$this->minsize = 300;
 		try 
         {
-    
-            if ($this->crawler) {
-                # code...
-            }
+            
             $imageCrawler = $this->crawler->filter('meta[property="og:image"]');
        
             if ($imageCrawler->count() > 0) 
