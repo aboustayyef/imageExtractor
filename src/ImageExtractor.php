@@ -11,7 +11,8 @@ use Symfony\Component\DomCrawler\Crawler;
  *  -> returns: first image that is wider than given width
  *
  *  Usage:
- *  $test = new \Aboustayyef\ImageExtractor('http://urlhere', 'html content here, optional');
+ *  $test = new \Aboustayyef\ImageExtractor('http://urlhere', 'html content here, optional', $verbose = true or false );
+ *  $test->verbose = true; // default is false
  *  echo $test->get(400); // minimum width = 400
  *  
  */
@@ -66,6 +67,8 @@ class ImageExtractor
         } else {
             $this->log('setting content to injected content');
             $this->content = $content;
+            $this->log('adding content of URL');
+            $this->content .= @file_get_contents($this->url);
         }
 
         // make sure content is big enough

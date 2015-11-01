@@ -41,7 +41,7 @@ class ImgTagGetter extends _Getter
                 $ratio = $width / $height;
 
                 $this->imageExtractor->log("-- Image Dimensions: Width: $width, Height: $height, Ratio: $ratio");
-	    		$min = $this->minsize;
+	    		$min = $minsize;
  	    	
 	    		if (($width > $min) && ($ratio < 3.5)) 
 	    		{
